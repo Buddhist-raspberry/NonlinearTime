@@ -142,7 +142,6 @@ public class PlayerMovement : MonoBehaviour
             currentAngles = CameraPosition.transform.localEulerAngles;
             currentAngles.x = m_VerticalAngle;
             CameraPosition.transform.localEulerAngles = currentAngles;
-  
 
             Speed = move.magnitude / (PlayerSpeed * Time.deltaTime);
             

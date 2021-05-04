@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,8 +32,6 @@ public abstract class Weapon : ChronosBehaviour
     [Space]
     [Header("Weapon Settings")]
     public float reloadTime = .3f;
-
-
     void Start()
     {
         rb = time.rigidbody;
@@ -69,6 +67,9 @@ public abstract class Weapon : ChronosBehaviour
         s.AppendCallback(() => rb.velocity = Vector3.zero);
         Vector3 throwDirection = Camera.main.transform.forward;
         s.AppendCallback(() => rb.velocity = throwDirection * throwPower);
+        // 扔武器消耗体力MP
+        PlayerProperty.instance.reduceMP(7);
+        
     }
 
     public void Pickup()        //捡起武器
