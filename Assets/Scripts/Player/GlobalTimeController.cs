@@ -44,6 +44,9 @@ public class GlobalTimeController : MonoBehaviour
 
 
     }
+    public void Pause(){
+        
+    }
 
     public void setAction(bool _action){
         action = _action;
