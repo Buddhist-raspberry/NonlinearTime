@@ -32,25 +32,25 @@ public class PlayerProperty : MonoBehaviour
     {
         currentHP += value;
         currentHP = currentHP <=maxHP?currentHP:maxHP;
-        Debug.Log(currentHP);
+        Debug.Log("HP: "+currentHP);
     }
     public void recoverMP(int value)
     {
         currentMP += value;
         currentMP = currentMP <=maxMP?currentMP:maxMP;
-        Debug.Log(currentMP);
+        Debug.Log("MP: "+currentMP);
     }
     public void reduceHP(int value)
     {
         currentHP -= value;
         currentHP = currentHP >= 0?currentHP:0;
-        Debug.Log(currentHP);
+        Debug.Log("HP: "+currentHP);
     }
     public void reduceMP(int value)
     {
         currentMP -= value;
         currentMP = currentMP >= 0?currentMP:0;
-        Debug.Log(currentMP);
+        Debug.Log("MP: "+currentMP);
     }
     
     // public void setPlayerHP(int value)

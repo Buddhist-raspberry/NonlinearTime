@@ -12,11 +12,11 @@ public abstract class Weapon : ChronosBehaviour
     [Header("Bools")]
     public bool active = true;
     public bool reloading;
-
     public float speedUpTimeScale = 3.0f;      //加速程度
     public float speedUpTime = 3.0f;            //减速时间
 
     public float throwPower = 500.0f;           //抛掷力度
+    public int useMP = 0;
 
     protected RigidbodyTimeline3D rb;
     protected Rigidbody m_rb;
@@ -55,7 +55,10 @@ public abstract class Weapon : ChronosBehaviour
     }
 
     protected abstract void Init();
-
+    public void setUseMP(int useMP) {
+        this.useMP = useMP;
+        Debug.Log(this.useMP);
+    }
     public void Throw()     //抛掷武器
     {
         if (playerController.weapon == this)
@@ -68,8 +71,7 @@ public abstract class Weapon : ChronosBehaviour
         Vector3 throwDirection = Camera.main.transform.forward;
         s.AppendCallback(() => rb.velocity = throwDirection * throwPower);
         // 扔武器消耗体力MP
-        PlayerProperty.instance.reduceMP(7);
-        
+        PlayerProperty.instance.reduceMP(useMP);
     }
 
     public void Pickup()        //捡起武器

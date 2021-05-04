@@ -6,7 +6,8 @@ using Chronos;
 public class Bullet : ChronosBehaviour
 {
     public float speed;
-
+    private int harmHP = 7;
+    public float destroyTime=3.0f;
     void Start()
     {
         if (time.timeScale > 0) // Move only when time is going forward
@@ -18,12 +19,23 @@ public class Bullet : ChronosBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.position += transform.forward * speed * Time.deltaTime;
+        transform.position += transform.forward * speed * Time.deltaTime;
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        Destroy(gameObject);
+        if(collider.gameObject.tag=="Player"){
+            Debug.Log("已中弹");
+            PlayerProperty.instance.reduceHP(harmHP);
+            Destroy(gameObject);
+        }
+        else{
+            Invoke("DestorySelf",destroyTime);
+        }
+    }
+    void DestorySelf()
+    {
+        GameObject.Destroy(gameObject);
     }
 }

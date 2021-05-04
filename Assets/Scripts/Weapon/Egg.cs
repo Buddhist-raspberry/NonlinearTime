@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Egg : Weapon
 {
+    private int eggUseMP = 6;
     protected Material originalMaterial;
     public Material speedMaterial;
     protected override void Init()
     {
         weaponType = WeaponType.EGG;
+        setUseMP(eggUseMP);
     }
 
     public override void SpeedUp()
