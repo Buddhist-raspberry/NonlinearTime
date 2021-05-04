@@ -10,6 +10,10 @@ public class PlayerProperty : MonoBehaviour
     public int maxMP = 100;
     int currentHP;
     int currentMP;
+    int timeRecoverHP = 6;
+    int timeRecoverMP = 3;
+    float currentHPTime = 3.0f;
+    float currentMPTime = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +21,8 @@ public class PlayerProperty : MonoBehaviour
         instance = this;
         currentHP = maxHP;
         currentMP = maxMP;
+        InvokeRepeating("recoverHP",0,currentHPTime);
+        // InvokeRepeating("recoverMP",0,currentMPTime);
     }
 
     // Update is called once per frame
@@ -25,46 +31,50 @@ public class PlayerProperty : MonoBehaviour
         // Debug.Log(currentHP);
         // Debug.Log(currentMP);
     }
+    
+    IEnumerator ActionE(float time)
+    {
+        GlobalTimeController.instance.setAction(true);
+        yield return new WaitForSecondsRealtime(.06f);
+        GlobalTimeController.instance.setAction(false);
+    }
 
     public int getPlayHP(){return currentHP;}
     public int getPlayMP(){return currentHP;}
-    public void recoverHP(int value)
+    public void recoverHP()
     {
-        currentHP += value;
+        currentHP += timeRecoverHP;
         currentHP = currentHP <=maxHP?currentHP:maxHP;
-        Debug.Log("HP: "+currentHP);
+        Debug.Log("recover HP: "+currentHP);
     }
-    public void recoverMP(int value)
+    public void recoverMP()
     {
-        currentMP += value;
+        currentMP += timeRecoverMP;
         currentMP = currentMP <=maxMP?currentMP:maxMP;
-        Debug.Log("MP: "+currentMP);
+        Debug.Log("recover MP: "+currentMP);
     }
+    // public void recoverHP(int value)
+    // {
+    //     currentHP += value;
+    //     currentHP = currentHP <=maxHP?currentHP:maxHP;
+    //     Debug.Log("recover HP: "+currentHP);
+    // }
+    // public void recoverMP(int value)
+    // {
+    //     currentMP += value;
+    //     currentMP = currentMP <=maxMP?currentMP:maxMP;
+    //     Debug.Log("recover MP: "+currentMP);
+    // }
     public void reduceHP(int value)
     {
         currentHP -= value;
         currentHP = currentHP >= 0?currentHP:0;
-        Debug.Log("HP: "+currentHP);
+        Debug.Log("reduce HP: "+currentHP);
     }
     public void reduceMP(int value)
     {
         currentMP -= value;
         currentMP = currentMP >= 0?currentMP:0;
-        Debug.Log("MP: "+currentMP);
+        Debug.Log("reduce MP: "+currentMP);
     }
-    
-    // public void setPlayerHP(int value)
-    // {
-    //     currentHP += value;
-    //     currentHP = currentHP <=maxHP?currentHP:maxHP;
-    //     currentHP = currentHP >= 0?currentHP:0;
-    //     Debug.Log(currentHP);
-    // }
-    // public void setPlayerMP(int value)
-    // {
-    //     currentMP += value;
-    //     currentMP = currentMP <=maxMP?currentMP:maxMP;
-    //     currentMP = currentMP >= 0?currentMP:0;
-    //     Debug.Log(currentMP);
-    // }
 }

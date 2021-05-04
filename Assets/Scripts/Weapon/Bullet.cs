@@ -26,7 +26,7 @@ public class Bullet : ChronosBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         if(collider.gameObject.tag=="Player"){
-            Debug.Log("已中弹");
+            // Debug.Log("已中弹");
             PlayerProperty.instance.reduceHP(harmHP);
             Destroy(gameObject);
         }
