@@ -27,8 +27,6 @@ public class GlobalTimeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
 
@@ -45,7 +43,7 @@ public class GlobalTimeController : MonoBehaviour
 
     }
     public void Pause(){
-        
+
     }
 
     public void setAction(bool _action){

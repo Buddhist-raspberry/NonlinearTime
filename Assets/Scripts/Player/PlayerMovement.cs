@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     public bool Grounded => m_Grounded;
 
     CharacterController m_CharacterController;
-
+  
     bool m_Grounded;
     float m_GroundedTimer;
     float m_SpeedAtJump = 0.0f;
