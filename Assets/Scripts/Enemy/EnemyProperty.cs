@@ -7,8 +7,8 @@ public class EnemyProperty : MonoBehaviour
     public int maxHP = 80;
     int currentHP;
 
-    public int getPlayHP(){return currentHP;} 
-    void reduceHP(int value)
+    public int getPlayHP(){return currentHP;}
+    public void reduceHP(int value)
     {
         currentHP -= value;
         currentHP = currentHP >= 0?currentHP:0;

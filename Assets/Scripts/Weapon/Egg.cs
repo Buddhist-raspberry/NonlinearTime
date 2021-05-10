@@ -30,11 +30,9 @@ public class Egg : Weapon
         GetComponent<MeshRenderer>().material = originalMaterial;
     }
 
-    private void OnCollisionStay(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if ( 1 << other.collider.gameObject.layer == LayerMask.GetMask("Enemy"))
-        {
-            // other.collider.GetComponent<EnemyNavigator>().SpeedDown();
-        }
+        base.Hit(collision.gameObject);
     }
+    
 }

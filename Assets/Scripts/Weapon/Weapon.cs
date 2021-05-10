@@ -25,13 +25,14 @@ public abstract class Weapon : ChronosBehaviour
     protected PlayerController playerController;
 
     public enum WeaponType      //武器类型
-    {   
+    {
         GUN, EGG
     };
     public WeaponType weaponType { get; protected set; }
     [Space]
     [Header("Weapon Settings")]
     public float reloadTime = .3f;
+    public float damagePerVelocity = 5f;
     void Start()
     {
         rb = time.rigidbody;
@@ -122,11 +123,32 @@ public abstract class Weapon : ChronosBehaviour
     {
         _RecoverSpeed();
     }
-
-    public float getVelocity()          
+    public float getVelocity()
     {
         return rb.velocity.magnitude * time.timeScale;
     }
 
+    protected void Hit(GameObject hitObject)    //击中物体
+    {
+        if (hitObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            float r_velocity = rb.velocity.magnitude;   //引擎内参数速度
+            float eTimeScale = hitObject.GetComponent<Timeline>().timeScale;
+            if (eTimeScale < 0)     //回溯敌人无法击中
+                return;
+
+            if (Mathf.Abs(eTimeScale - time.timeScale) <= 0.01)
+                eTimeScale = time.timeScale;
+
+            float velocity = r_velocity * time.timeScale / eTimeScale;
+            
+            //击中敌人计算伤害
+            int damage = Mathf.FloorToInt(velocity * damagePerVelocity);
+            Debug.Log("Cause Damage: " + damage);
+            hitObject.GetComponent<EnemyProperty>().reduceHP(damage);
+
+            return;
+        }
+    }
 
 }
