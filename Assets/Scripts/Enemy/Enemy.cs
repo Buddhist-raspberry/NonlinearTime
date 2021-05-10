@@ -103,6 +103,7 @@ public class Enemy : ChronosBehaviour
                 if (IsInPosition(basePosition))
                 {
                     state = State.Idle;
+                    m_animator.SetBool("isIdle",true);
                     return;
                 }
                 changeDestination(basePosition);
@@ -150,6 +151,7 @@ public class Enemy : ChronosBehaviour
     }
     void OnEnemySpooted(GameObject enemy)   //发现玩家
     {
+        m_animator.SetBool("isIdle",false);
         state = State.Attack;
         invader = enemy;
     }
