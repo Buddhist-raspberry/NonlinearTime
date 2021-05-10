@@ -13,11 +13,18 @@ public class PlayerController : MonoBehaviour
     public bool canShoot = true;
     public bool action;
     private enum UseStatus{
-        WEAPON,MAGIC
+        CONTROL,WEAPON,MAGIC
     };
     private UseStatus currentUseStatus = UseStatus.WEAPON;
     private MagicController m_magicController;
 
+    [Header("Control")]
+    public GameObject controlBall;
+    
+    [Header("Magic")]
+    public Magic ownMagic;
+
+    [Space]
     [Header("Weapon")]
     public Weapon weapon;
     public Transform weaponHolder;
@@ -48,7 +55,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //使用武器
-        if (Input.GetMouseButtonDown(0))
+        if (CheckStatus(UseStatus.WEAPON)&&Input.GetMouseButtonDown(0))
         {
             StopCoroutine(ActionE(.03f));
             StartCoroutine(ActionE(.03f));
@@ -68,7 +75,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         //抛弃武器
-        if (Input.GetMouseButtonDown(1))
+        if (CheckStatus(UseStatus.WEAPON)&&Input.GetMouseButtonDown(1))
         {
             StopCoroutine(ActionE(.4f));
             StartCoroutine(ActionE(.4f));
@@ -96,7 +103,7 @@ public class PlayerController : MonoBehaviour
             
             keepSlected = true;
 
-            if (Input.GetAxis("Mouse ScrollWheel") != 0)
+            if (CheckStatus(UseStatus.CONTROL)&&Input.GetAxis("Mouse ScrollWheel") != 0)
             {
                 ChronosBehaviour t_chronosBehaviour = hit.transform.GetComponent<ChronosBehaviour>();
                 float currentTimeScale = t_chronosBehaviour.GetLocalTimeScale();
@@ -132,14 +139,18 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E) && weapon == null)
             {
                 hit.transform.GetComponent<Weapon>().Pickup();
+                ChangeUseStatus(UseStatus.WEAPON);
             }
         }
 
         //武器加速
-        if(Input.GetKeyDown(KeyCode.J) && weapon != null)
+        if(CheckStatus(UseStatus.CONTROL)&&Input.GetKeyDown(KeyCode.J) && weapon != null)
         {
             weapon.SpeedUp();
         }
+
+        //监听武器切换
+        StatusChangeListener();
     }
 
     IEnumerator ActionE(float time)
@@ -159,6 +170,64 @@ public class PlayerController : MonoBehaviour
     {
         return Camera.main.transform.position + (Camera.main.transform.forward * .5f) + (Camera.main.transform.up * -.02f);
     }
+    
+    void StatusChangeListener()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChangeUseStatus(UseStatus.CONTROL);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ChangeUseStatus(UseStatus.WEAPON);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            ChangeUseStatus(UseStatus.MAGIC);
+            return;
+        }
+    }
 
+    void ChangeUseStatus(UseStatus status)
+    {
+        
+        if (status == UseStatus.CONTROL)
+        {
+            currentUseStatus = UseStatus.CONTROL;
+            controlBall.SetActive(true);
+            if (weapon != null)
+                weapon.gameObject.SetActive(false);
+            if (ownMagic != null)
+                ownMagic.gameObject.SetActive(false);
+            return;
+        }
+        if (status == UseStatus.WEAPON)
+        {
+            currentUseStatus = UseStatus.WEAPON;
+            controlBall.SetActive(false);
+            if (weapon != null)
+                weapon.gameObject.SetActive(true);
+            if (ownMagic != null)
+                ownMagic.gameObject.SetActive(false);
+            return;
+        }
+        if (status == UseStatus.MAGIC)
+        {
+            currentUseStatus = UseStatus.MAGIC;
+            controlBall.SetActive(false);
+            if (weapon != null)
+                weapon.gameObject.SetActive(false);
+            if (ownMagic != null)
+                ownMagic.gameObject.SetActive(true);
+            return;
+        }
+    }
+
+    bool CheckStatus(UseStatus status)
+    {
+        return status == currentUseStatus;    
+    }
 
 }
