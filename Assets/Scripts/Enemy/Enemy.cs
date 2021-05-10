@@ -160,7 +160,7 @@ public class Enemy : ChronosBehaviour
             return;
         }
         GameObject bullet = Instantiate(bulletPrefab, transform.position + m_collider.center, transform.rotation);
-        bullet.transform.parent = transform;
+        bullet.transform.parent = null;
         fireCd = Time.time + fireInterval;
     }
     bool IsInPosition(Vector3 pos)      //是否在pos位置

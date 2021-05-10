@@ -83,15 +83,18 @@ public class PlayerController : MonoBehaviour
 
         
         RaycastHit hit;
+        bool keepSlected = false;
         //光标选择
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, glowLayer))
         {
             if (hit.transform != _selection) {
                 if (_selection != null)
-                    _selection.GetComponent<Glowing>().Unselected();
-                _selection = hit.transform;
-                _selection.GetComponent<Glowing>().Selected();
+                    _selection.GetComponent<Glowing>().Unselected(); 
+            _selection = hit.transform;
+            _selection.GetComponent<Glowing>().Selected();
             }
+            
+            keepSlected = true;
 
             if (Input.GetAxis("Mouse ScrollWheel") != 0)
             {
@@ -117,6 +120,12 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+
+        if  (!keepSlected && _selection != null) {
+            _selection.GetComponent<Glowing>().Unselected();
+            _selection = null;
+        }
+
         //捡起武器
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit,5, weaponLayer))
         {
